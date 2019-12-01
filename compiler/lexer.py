@@ -1,14 +1,15 @@
 from compiler.tokens import Tokens, TOKENTYPES
 from compiler.error_printer import throw_error_unsupported
 
-
 class Lexer:
     '''
-        Lexer creates a list of tokens out of plain text strings
+        Lexical analysis of code by creating tokens out of loop/while code,
+        followed by syntax checking through an Abstract Syntax Tree.
     '''
 
     def __init__(self, input_code):
         self.full_code = input_code
+        self.AST = []
 
     def create_tokens(self) -> [Tokens]:
         token_list = []
@@ -42,11 +43,3 @@ class Lexer:
                 token_list.append(Tokens(identifier, TOKENTYPES.get('variable')))
             else:
                 throw_error_unsupported(identifier)
-
-if __name__ == '__main__':
-    program_definition = 'def MyFunc(x1):'
-    lexer = Lexer(program_definition)
-    generated_tokens = lexer.create_tokens()
-    for i in range(len(generated_tokens)):
-        print(i)
-        print(generated_tokens[i].value + '   ' + generated_tokens[i].type)

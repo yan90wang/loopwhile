@@ -2,15 +2,14 @@ import unittest
 from compiler.lexer import Lexer
 from compiler.tokens import Tokens, TOKENTYPES
 
-
 class TestTokenCreation(unittest.TestCase):
-    #### Helper Functions ####
+#### Helper Functions ####
     def validate_tokens(self, generated_tokens, tokens):
         for i in range(len(tokens)):
             self.assertEqual(tokens[i].type, generated_tokens[i].type)
             self.assertEqual(tokens[i].value, generated_tokens[i].value)
 
-    #### Program Definition ####
+#### Program Definition ####
     def test_one_input_parameter(self):
         program_definition = 'TestFunction(x1)'
         self.lexer = Lexer(program_definition)
@@ -91,7 +90,7 @@ class TestTokenCreation(unittest.TestCase):
                   Tokens('Floop', TOKENTYPES.get('variable'))]
         self.validate_tokens(generated_tokens, tokens)
 
-    #### General Cases and negative tests ####
+ #### General Cases and negative tests ####
     def test_empty_word(self):
         program_definition = '   '
         self.lexer = Lexer(program_definition)
@@ -103,7 +102,6 @@ class TestTokenCreation(unittest.TestCase):
     #     program_definition = '#'
     #     self.lexer = Lexer(program_definition)
     #     # TODO
-
 
 if __name__ == '__main__':
     unittest.main()
