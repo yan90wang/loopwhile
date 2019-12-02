@@ -67,6 +67,28 @@ class TestSyntax(unittest.TestCase):
         self.parser.create_AST(self.correct_definition + tokens)
         self.assertEqual(len(self.parser.AST.body), 1)
 
+    def test_nested_loop(self):
+        #  parsing loop x1 do loop x2 do x2 := x2 + 5 end end
+        tokens = [Tokens('LOOP', TOKENTYPES.get('LOOP')), Tokens('x1', TOKENTYPES.get('variable')),
+                  Tokens('DO', TOKENTYPES.get('DO')), Tokens('LOOP', TOKENTYPES.get('LOOP')),
+                  Tokens('x2', TOKENTYPES.get('variable')), Tokens('DO', TOKENTYPES.get('DO')),
+                  Tokens('x2', TOKENTYPES.get('variable')), Tokens(':=', TOKENTYPES.get(':=')),
+                  Tokens('x2', TOKENTYPES.get('variable')), Tokens('+', TOKENTYPES.get('+')),
+                  Tokens('5', TOKENTYPES.get('number')), Tokens('END', TOKENTYPES.get('END')),
+                  Tokens('END', TOKENTYPES.get('END'))]
+        self.parser.create_AST(self.correct_definition + tokens)
+        self.assertEqual(len(self.parser.AST.body), 1)
+
+    def test_nested_loop_missing_one_end(self):
+        #  parsing loop x1 do loop x2 do x2 := x2 + 5 end end
+        tokens = [Tokens('LOOP', TOKENTYPES.get('LOOP')), Tokens('x1', TOKENTYPES.get('variable')),
+                  Tokens('DO', TOKENTYPES.get('DO')), Tokens('LOOP', TOKENTYPES.get('LOOP')),
+                  Tokens('x2', TOKENTYPES.get('variable')), Tokens('DO', TOKENTYPES.get('DO')),
+                  Tokens('x2', TOKENTYPES.get('variable')), Tokens(':=', TOKENTYPES.get(':=')),
+                  Tokens('x2', TOKENTYPES.get('variable')), Tokens('+', TOKENTYPES.get('+')),
+                  Tokens('5', TOKENTYPES.get('number')), Tokens('END', TOKENTYPES.get('END'))]
+        self.expect_exception(tokens)
+
 
 class TestSyntaxFunctionDefinition(unittest.TestCase):
     def setUp(self):

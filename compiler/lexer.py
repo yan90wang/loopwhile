@@ -1,6 +1,7 @@
 from compiler.tokens import Tokens, TOKENTYPES
 from compiler.error_printer import throw_error_unsupported
 
+
 class Lexer:
     '''
         Lexical analysis of code by creating tokens out of loop/while code,
@@ -17,12 +18,12 @@ class Lexer:
         for current_char in self.full_code:
             if current_char.isalnum():
                 identifier += current_char
-            elif current_char == '(' or ')' or '+' or '-' or ':' or '=' or ' ' or ',' or ';':
+            elif current_char == '(' or ')' or '+' or '-' or ':' or '=' or ' ' or ',' or ';' or '\n':
                 self.create_multi_char_tokens(identifier, token_list, current_char)
                 identifier = ''
                 if current_char == ':':
                     identifier = current_char
-                elif current_char != ' ' and current_char != '=':
+                elif current_char != ' ' and current_char != '=' and current_char != '\n':
                     token_list.append(Tokens(current_char, TOKENTYPES.get(current_char)))
         if identifier != '':
             self.create_multi_char_tokens(identifier, token_list, '')

@@ -17,7 +17,11 @@ class Parser:
             if token.type == TOKENTYPES.get('def'):
                 self.AST = self.create_and_check_definition_AST(tokens)
             else:
-                throw_syntax_error('No function definition found')
+                throw_syntax_error(
+                    "No function definition found, please define a Loop/While function with: def func(arguments)")
+        else:
+            throw_syntax_error(
+                "No function definition found, please define a Loop/While function with: def func(arguments)")
         has_end = self.create_AST_nodes(self.AST, token, tokens)
         if has_end:
             throw_syntax_error('keyword END found without corresponding LOOP keyword')
@@ -25,8 +29,6 @@ class Parser:
     def create_AST_nodes(self, current_node, old_token, tokens) -> bool:
         while len(tokens) >= 1:
             current_token = tokens.pop(0)
-            if current_token.type == (TOKENTYPES.get('(') or TOKENTYPES.get(')') or TOKENTYPES.get(':')):
-                throw_syntax_error('Unmatched character(s) found: ' + current_token.value)
             if current_token.type == TOKENTYPES.get(':='):
                 if old_token.type == TOKENTYPES.get('variable'):
                     left = self.check_correct_token(self.eat_next_token(tokens), [TOKENTYPES.get('variable')])
@@ -42,6 +44,7 @@ class Parser:
             if current_token.type == TOKENTYPES.get('LOOP'):
                 condition = self.check_correct_token(self.eat_next_token(tokens), [TOKENTYPES.get('variable')])
                 loop_node = Loop(condition, current_token)
+                self.check_correct_token(self.eat_next_token(tokens), [TOKENTYPES.get('DO')])
                 has_end = self.create_AST_nodes(loop_node, current_token, tokens)
                 if not has_end:
                     throw_syntax_error('No according END')
@@ -49,6 +52,10 @@ class Parser:
                 self.check_semicolon_needed(tokens)
             if current_token.type == TOKENTYPES.get('END'):
                 return True
+            if current_token.type != TOKENTYPES.get('variable') and current_token.type != TOKENTYPES.get(
+                    ':=') and current_token.type != TOKENTYPES.get('LOOP') and current_token.type != TOKENTYPES.get(
+                'END'):
+                throw_syntax_error('Unmatched character(s) found: ' + current_token.value)
             old_token = current_token
         return False
 
