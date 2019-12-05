@@ -22,41 +22,49 @@ class Parser:
         else:
             throw_syntax_error(
                 "No function definition found, please define a Loop/While function with: def func(arguments)")
-        has_end = self.create_AST_nodes(self.AST, token, tokens)
+        has_end = self.create_AST_nodes(self.AST, token, tokens, False)
         if has_end:
             throw_syntax_error('keyword END found without corresponding LOOP keyword')
 
-    def create_AST_nodes(self, current_node, old_token, tokens) -> bool:
+    def create_AST_nodes(self, current_node, old_token, tokens, isloop) -> bool:
         while len(tokens) >= 1:
             current_token = tokens.pop(0)
-            if current_token.type == TOKENTYPES.get(':='):
-                if old_token.type == TOKENTYPES.get('variable'):
-                    left = self.check_correct_token(self.eat_next_token(tokens), [TOKENTYPES.get('variable')])
-                    operator = self.check_correct_token(self.eat_next_token(tokens),
-                                                        [TOKENTYPES.get('+'), TOKENTYPES.get('-')])
-                    right = self.check_correct_token(self.eat_next_token(tokens),
-                                                     [TOKENTYPES.get('variable'), TOKENTYPES.get('number')])
-                    operation = BinaryOperator(left, operator, right)
-                    current_node.body.append(Assignment(current_token, old_token, operation))
+            if current_token.type == TOKENTYPES.get('variable'):
+                assignment = self.check_correct_token(self.eat_next_token(tokens), [TOKENTYPES.get(':=')])
+                left = self.check_correct_token(self.eat_next_token(tokens), [TOKENTYPES.get('variable'), TOKENTYPES.get('number')])
+                operator = self.check_correct_token(self.eat_next_token(tokens),
+                                                    [TOKENTYPES.get('+'), TOKENTYPES.get('-')])
+                right = self.check_correct_token(self.eat_next_token(tokens),
+                                                 [TOKENTYPES.get('variable'), TOKENTYPES.get('number')])
+                operation = BinaryOperator(left, operator, right)
+                current_node.body.append(Assignment(assignment, current_token, operation))
+                if not isloop:
                     self.check_semicolon_needed(tokens)
-                else:
-                    throw_syntax_error('Assignment missing variable to assign to')
-            if current_token.type == TOKENTYPES.get('LOOP'):
+            elif current_token.type == TOKENTYPES.get('LOOP'):
                 condition = self.check_correct_token(self.eat_next_token(tokens), [TOKENTYPES.get('variable')])
                 loop_node = Loop(condition, current_token)
                 self.check_correct_token(self.eat_next_token(tokens), [TOKENTYPES.get('DO')])
-                has_end = self.create_AST_nodes(loop_node, current_token, tokens)
+                has_end = self.create_AST_nodes(loop_node, current_token, tokens, True)
                 if not has_end:
                     throw_syntax_error('No according END')
                 current_node.body.append(loop_node)
                 self.check_semicolon_needed(tokens)
-            if current_token.type == TOKENTYPES.get('END'):
+            elif current_token.type == TOKENTYPES.get('WHILE'):
+                variable = self.check_correct_token(self.eat_next_token(tokens), [TOKENTYPES.get('variable')])
+                not_equals = self.check_correct_token(self.eat_next_token(tokens), [TOKENTYPES.get('not')])
+                number = self.check_correct_token(self.eat_next_token(tokens), [TOKENTYPES.get('number')])
+                not_equals_node = NotEquals(variable, not_equals, number)
+                while_node = While(not_equals_node, current_token)
+                self.check_correct_token(self.eat_next_token(tokens), [TOKENTYPES.get('DO')])
+                has_end = self.create_AST_nodes(while_node, current_token, tokens, True)
+                if not has_end:
+                    throw_syntax_error('No according END')
+                current_node.body.append(while_node)
+                self.check_semicolon_needed(tokens)
+            elif current_token.type == TOKENTYPES.get('END'):
                 return True
-            if current_token.type != TOKENTYPES.get('variable') and current_token.type != TOKENTYPES.get(
-                    ':=') and current_token.type != TOKENTYPES.get('LOOP') and current_token.type != TOKENTYPES.get(
-                'END'):
-                throw_syntax_error('Unmatched character(s) found: ' + current_token.value)
-            old_token = current_token
+            else:
+                throw_syntax_error('Unmatched character(s) or wrong expression found: ' + current_token.value)
         return False
 
     def check_semicolon_needed(self, tokens):

@@ -1,0 +1,10 @@
+def what(x1):
+xn1:=x1-0;
+xn2:=0 + 0;
+xn3:=0 + 1;
+WHILE xn1 not 0 DO
+  xn2 := xn2 + 1
+  xn3 := xn2 + 0
+  xn1 := xn1 - 1
+END;
+x0 := xn3 + xn2

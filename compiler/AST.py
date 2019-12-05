@@ -41,3 +41,15 @@ class Definition(AST):
         self.left = parameters
         self.token = function_name
         self.body = []
+
+class While(AST):
+    def __init__(self, condition, while_token):
+        self.condition = condition
+        self.body = []
+        self.token = while_token
+
+class NotEquals(AST):
+    def __init__(self, left, not_equals, right):
+        self.left = left
+        self.right = right
+        self.token = not_equals

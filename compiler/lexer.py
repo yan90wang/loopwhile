@@ -36,7 +36,7 @@ class Lexer:
                     token_list.append(Tokens(':=', TOKENTYPES.get(':=')))
                 else:
                     token_list.append(Tokens(identifier, TOKENTYPES.get(identifier)))
-            elif identifier == 'def' or identifier == 'LOOP' or identifier == 'END' or identifier == 'DO':
+            elif identifier == 'def' or identifier == 'LOOP' or identifier == 'END' or identifier == 'DO' or identifier == 'WHILE' or identifier == 'not':
                 token_list.append(Tokens(identifier, TOKENTYPES.get(identifier)))
             elif identifier.isdigit():
                 token_list.append(Tokens(identifier, TOKENTYPES.get('number')))

@@ -12,7 +12,9 @@ TOKENTYPES = {
     'LOOP': 'LOOP',
     'DO': 'DO',
     'END': 'END',
-    ':': 'DEFINITION_END'
+    ':': 'DEFINITION_END',
+    'WHILE': 'WHILE',
+    'not': 'not'
 }
 
 
