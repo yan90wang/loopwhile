@@ -4,7 +4,7 @@ LOOP x2 DO
     x0 := x0 + 1
     x1:= x1 + 3
 END;
-WHILE x1 not 0 DO
+WHILE x1 not 3 DO
     x1 := x1 - 1
     LOOP x2 DO
     x20 := x20 + 40

@@ -53,6 +53,8 @@ class Parser:
                 variable = self.check_correct_token(self.eat_next_token(tokens), [TOKENTYPES.get('variable')])
                 not_equals = self.check_correct_token(self.eat_next_token(tokens), [TOKENTYPES.get('not')])
                 number = self.check_correct_token(self.eat_next_token(tokens), [TOKENTYPES.get('number')])
+                if int(number.value) != 0:
+                    throw_syntax_error('The condition of a while loop should be: xn not 0, but actual: ' + variable.value + ' not ' + number.value)
                 not_equals_node = NotEquals(variable, not_equals, number)
                 while_node = While(not_equals_node, current_token)
                 self.check_correct_token(self.eat_next_token(tokens), [TOKENTYPES.get('DO')])
