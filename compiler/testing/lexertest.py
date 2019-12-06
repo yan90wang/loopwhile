@@ -98,10 +98,6 @@ class TestTokenCreation(unittest.TestCase):
         tokens = []
         self.assertEqual(tokens, generated_tokens)
 
-    # def test_invalid_character(self):
-    #     program_definition = '#'
-    #     self.lexer = Lexer(program_definition)
-    #     # TODO
 
 if __name__ == '__main__':
     unittest.main()
