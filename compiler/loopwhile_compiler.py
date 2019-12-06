@@ -21,6 +21,7 @@ class LoopWhileCompiler:
         parser = Parser()
         parser.create_AST(lexer.create_tokens())
         variables = self.get_all_defined_variables(parser.AST, {'x0': 0})
+        self.check_variable_names(variables)
         variables = self.set_initial_variable_values(parser.AST, variables, parameters)
         self.generate_code(parser.AST, variables)
         print("Result: " + str(variables['x0']))
@@ -89,3 +90,10 @@ class LoopWhileCompiler:
             variables[params.token.value] = parameters[i]
             i += 1
         return variables
+
+    def check_variable_names(self, variables):
+        for key in variables:
+            if len(key) != 2:
+                if key[0] != 'x' or not key[1].isdigit():
+                    throw_syntax_error('Variables have to be of the form xn, but variable was: ' + key)
+

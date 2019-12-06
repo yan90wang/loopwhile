@@ -31,11 +31,10 @@ class Parser:
             current_token = tokens.pop(0)
             if current_token.type == TOKENTYPES.get('variable'):
                 assignment = self.check_correct_token(self.eat_next_token(tokens), [TOKENTYPES.get(':=')])
-                left = self.check_correct_token(self.eat_next_token(tokens), [TOKENTYPES.get('variable'), TOKENTYPES.get('number')])
+                left = self.check_correct_token(self.eat_next_token(tokens), [TOKENTYPES.get('variable')])
                 operator = self.check_correct_token(self.eat_next_token(tokens),
                                                     [TOKENTYPES.get('+'), TOKENTYPES.get('-')])
-                right = self.check_correct_token(self.eat_next_token(tokens),
-                                                 [TOKENTYPES.get('variable'), TOKENTYPES.get('number')])
+                right = self.check_correct_token(self.eat_next_token(tokens), [TOKENTYPES.get('number')])
                 operation = BinaryOperator(left, operator, right)
                 current_node.body.append(Assignment(assignment, current_token, operation))
                 if not isloop:
@@ -100,4 +99,4 @@ class Parser:
         for i in range(len(expected_token_types)):
             if (token.type == expected_token_types[i]):
                 return token
-        throw_syntax_error('Expected: ' + str(expected_token_types) + ' but actual: ' + token.value)
+        throw_syntax_error('Expected type: ' + str(*expected_token_types) + ' but actual: ' + token.value)
