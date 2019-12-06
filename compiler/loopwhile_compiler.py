@@ -85,7 +85,7 @@ class LoopWhileCompiler:
     def set_initial_variable_values(self, DefinitionAST, variables, parameters):
         i = 0
         if len(parameters) != len(DefinitionAST.left):
-            throw_semantic_error('Missing input parameters')
+            throw_semantic_error('Wrong input parameters')
         for params in DefinitionAST.left:
             variables[params.token.value] = parameters[i]
             i += 1

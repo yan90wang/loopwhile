@@ -19,6 +19,6 @@ from compiler.loopwhile_compiler import *
 '''
 if __name__ == '__main__':
     compiler = LoopWhileCompiler()
-    parameters = [8]
-    txt_file = 'test.txt'
+    parameters = [3, 1]
+    txt_file = 'addition.txt'
     compiler.compile('input/' + txt_file, parameters)

@@ -3,4 +3,11 @@ x0 := x1 + 0;
 LOOP x2 DO
     x0 := x0 + 1
     x1:= x1 + 3
-END
+END;
+WHILE x1 not 0 DO
+    x1 := x1 - 1
+    LOOP x2 DO
+    x20 := x20 + 40
+    END
+END;
+x0 := x20 + 0

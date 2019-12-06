@@ -47,7 +47,8 @@ class Parser:
                 if not has_end:
                     throw_syntax_error('No according END')
                 current_node.body.append(loop_node)
-                self.check_semicolon_needed(tokens)
+                if not isloop:
+                    self.check_semicolon_needed(tokens)
             elif current_token.type == TOKENTYPES.get('WHILE'):
                 variable = self.check_correct_token(self.eat_next_token(tokens), [TOKENTYPES.get('variable')])
                 not_equals = self.check_correct_token(self.eat_next_token(tokens), [TOKENTYPES.get('not')])
@@ -59,7 +60,8 @@ class Parser:
                 if not has_end:
                     throw_syntax_error('No according END')
                 current_node.body.append(while_node)
-                self.check_semicolon_needed(tokens)
+                if not isloop:
+                    self.check_semicolon_needed(tokens)
             elif current_token.type == TOKENTYPES.get('END'):
                 return True
             else:
