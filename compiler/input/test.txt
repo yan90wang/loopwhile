@@ -3,8 +3,12 @@ x1:=x1-0;
 x2:=x1 + 0;
 x3:=x1+ 1;
 WHILE x1 not 0 DO
-  x2 := x2 + 1
-  x3 := x2 + 0
-  x1 := x1 - 1
+  x2 := x2 + 1;
+  x3 := x2 + 0;
+  x1 := x1 - 1;
+  LOOP x3 DO
+  x4 := x2 + 2;
+  x5 := x2 + 1
+  END
 END;
 x0 := x3 + 4

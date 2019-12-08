@@ -37,8 +37,7 @@ class Parser:
                 right = self.check_correct_token(self.eat_next_token(tokens), [TOKENTYPES.get('number')])
                 operation = BinaryOperator(left, operator, right)
                 current_node.body.append(Assignment(assignment, current_token, operation))
-                if not isloop:
-                    self.check_semicolon_needed(tokens)
+                self.check_semicolon_needed(tokens)
             elif current_token.type == TOKENTYPES.get('LOOP'):
                 condition = self.check_correct_token(self.eat_next_token(tokens), [TOKENTYPES.get('variable')])
                 loop_node = Loop(condition, current_token)
@@ -47,8 +46,7 @@ class Parser:
                 if not has_end:
                     throw_syntax_error('No according END')
                 current_node.body.append(loop_node)
-                if not isloop:
-                    self.check_semicolon_needed(tokens)
+                self.check_semicolon_needed(tokens)
             elif current_token.type == TOKENTYPES.get('WHILE'):
                 variable = self.check_correct_token(self.eat_next_token(tokens), [TOKENTYPES.get('variable')])
                 not_equals = self.check_correct_token(self.eat_next_token(tokens), [TOKENTYPES.get('not')])
@@ -62,8 +60,7 @@ class Parser:
                 if not has_end:
                     throw_syntax_error('No according END')
                 current_node.body.append(while_node)
-                if not isloop:
-                    self.check_semicolon_needed(tokens)
+                self.check_semicolon_needed(tokens)
             elif current_token.type == TOKENTYPES.get('END'):
                 return True
             else:
@@ -71,12 +68,24 @@ class Parser:
         return False
 
     def check_semicolon_needed(self, tokens):
+        next_token = None
         token_after_next_token = None
+        if len(tokens) >= 1:
+            next_token = tokens[0]
         if len(tokens) >= 2:
             token_after_next_token = tokens[1]
-        if token_after_next_token is not None:
-            if token_after_next_token.type is not TOKENTYPES.get('END'):
-                self.check_correct_token(self.eat_next_token(tokens), [TOKENTYPES.get(';')])
+        if next_token is not None:
+            if next_token.type is TOKENTYPES.get(';'):
+                if token_after_next_token is None:
+                    throw_syntax_error('Semicolon found where no Semicolon is expected')
+                elif token_after_next_token.type is TOKENTYPES.get('END'):
+                    throw_syntax_error('Semicolon found before keyword END - no Semicolon is expected here')
+                else:
+                    self.check_correct_token(self.eat_next_token(tokens), [TOKENTYPES.get(';')])
+            else:
+                if token_after_next_token is not None:
+                    if next_token.type is not TOKENTYPES.get('END'):
+                        self.check_correct_token(self.eat_next_token(tokens), [TOKENTYPES.get(';')])
 
     def create_and_check_definition_AST(self, tokens):
         function_name = self.check_correct_token(self.eat_next_token(tokens), [TOKENTYPES.get('variable')])

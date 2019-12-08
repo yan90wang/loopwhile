@@ -1,7 +1,6 @@
-from compiler.loopwhile_compiler import *
-
-'''
-         Loop/While compiler usage: 
+Use __init__.py file for running.
+         
+Loop/While compiler usage: 
          -Put Loop/While programs as text files into folder input
          -if input parameters exist, specify them as a list, for example : parameters = [1, 2, 3]
          -run one specific program by changing: txt_file = 'yourprogram.txt' 
@@ -16,9 +15,3 @@ from compiler.loopwhile_compiler import *
         
         Note: as defined by the LOOP/WHILE language initially all variables are set to 0, therefore a variable does not 
         need to be defined before usage 
-'''
-if __name__ == '__main__':
-    compiler = LoopWhileCompiler()
-    parameters = [39]
-    txt_file = 'test.txt'
-    compiler.compile('input/' + txt_file, parameters)
