@@ -1,0 +1,21 @@
+def max(x1,x2):
+x3:= x1 + 0 ;
+LOOP x2 DO
+    x3:= x3 - 1
+END;
+x4 :=x2+0;
+LOOP x1 DO
+x4:=x4-1
+END;
+LOOP x3 DO
+    x5 := x5 + 1
+END;
+LOOP x4 DO
+    x6 := x6 + 1
+END;
+LOOP x5 DO
+    x0 := x1 + 0
+END;
+LOOP x6 DO
+    x0 := x2 + 0
+END
