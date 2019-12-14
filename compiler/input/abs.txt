@@ -6,12 +6,12 @@ WHILE x3 not 0 DO
     x4 := x4 - 1
 END;
 LOOP x4 DO
-x0 := x0 + 1
+    x0 := x0 + 1
 END;
 WHILE x2 not 0 DO
     x2:= x2 - 1;
     x1 := x1 - 1
 END;
 LOOP x1 DO
-x0 := x0 +1
+    x0 := x0 +1
 END

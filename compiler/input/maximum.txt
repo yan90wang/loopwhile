@@ -5,7 +5,7 @@ LOOP x2 DO
 END;
 x4 :=x2+0;
 LOOP x1 DO
-x4:=x4-1
+    x4:=x4-1
 END;
 LOOP x3 DO
     x5 := x5 + 1

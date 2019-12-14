@@ -106,4 +106,8 @@ class LoopWhileCompiler:
                 if key[0] != 'x' or not key[1].isdigit():
                     throw_syntax_error('Variables have to be of the form xn, but variable was: ' + key)
             else:
-                throw_syntax_error('Variables have to be of the form xn, but variable was: ' + key)
+                if len(key) < 2:
+                    throw_syntax_error('Variables have to be of the form xn, but variable was: ' + key)
+                else:
+                    if key[0] != 'x' or not key[1:].isdigit():
+                        throw_syntax_error('Variables have to be of the form xn, but variable was: ' + key)
