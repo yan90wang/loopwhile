@@ -45,7 +45,10 @@ class LoopWhileCompiler:
             if current_node.right.token.type is TOKENTYPES.get('+'):
                 variables[current_node.left.value] = left_value + right_value
             else:
-                variables[current_node.left.value] = left_value - right_value
+                if left_value - right_value > 0:
+                    variables[current_node.left.value] = left_value - right_value
+                else:
+                    variables[current_node.left.value] = 0
         if isinstance(current_node, Loop):
             for i in range(variables[current_node.condition.value]):
                 for statement in current_node.body:
@@ -75,9 +78,15 @@ class LoopWhileCompiler:
                 if var_right.value not in variables:
                     variables[var_right.value] = 0
         if isinstance(current_node, Loop):
+            var_condition = current_node.condition.value
+            if var_condition not in variables:
+                variables[var_condition] = 0
             for statement in current_node.body:
                 variables = self.get_all_defined_variables(statement, variables)
         if isinstance(current_node, While):
+            var_condition = current_node.condition.left.value
+            if var_condition not in variables:
+                variables[var_condition] = 0
             for statement in current_node.body:
                 variables = self.get_all_defined_variables(statement, variables)
         return variables
@@ -93,7 +102,8 @@ class LoopWhileCompiler:
 
     def check_variable_names(self, variables):
         for key in variables:
-            if len(key) != 2:
+            if len(key) == 2:
                 if key[0] != 'x' or not key[1].isdigit():
                     throw_syntax_error('Variables have to be of the form xn, but variable was: ' + key)
-
+            else:
+                throw_syntax_error('Variables have to be of the form xn, but variable was: ' + key)

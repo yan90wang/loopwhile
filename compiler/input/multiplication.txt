@@ -1,6 +1,5 @@
 def multiplication(x1,x2):
 LOOP x1 DO
-  x0 := x0 + 0
   LOOP x2 DO
     x0 := x0 + 1
   END
